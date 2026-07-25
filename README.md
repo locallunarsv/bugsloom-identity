@@ -82,6 +82,22 @@ Planned features:
 * [ ] Additional validation helpers
 * [ ] Stable v1.0 API
 
+## Parsing
+
+Existing identifiers can be parsed back into an `identity.ID`.
+
+Example:
+
+```go
+id, err := identity.Parse(
+    "0192f5e7-8d32-7a91-b5e1-2a3c4d5e6f70",
+)
+
+if err != nil {
+    panic(err)
+}
+```
+
 ## License
 
 MIT License
