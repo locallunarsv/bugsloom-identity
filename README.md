@@ -1,3 +1,5 @@
+[![Go Test](https://github.com/locallunarsv/bugsloom-identity/actions/workflows/test.yml/badge.svg)](...)
+
 # Bugsloom Identity
 
 A lightweight Go identity library providing UUID v7 based identifiers with a type-safe abstraction.

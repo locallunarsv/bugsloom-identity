@@ -1,8 +1,6 @@
 package identity
 
-import (
-	"encoding/json"
-)
+import "encoding/json"
 
 func (id ID) MarshalJSON() ([]byte, error) {
 	return json.Marshal(id.String())

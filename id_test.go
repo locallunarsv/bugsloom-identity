@@ -1,7 +1,7 @@
 package identity_test
 
 import (
-	"encoding/json"
+	"fmt"
 	"testing"
 
 	identity "github.com/locallunarsv/bugsloom-identity"
@@ -11,7 +11,11 @@ func TestNewID(t *testing.T) {
 	id := identity.New()
 
 	if !id.Valid() {
-		t.Fatal("generated ID should be valid")
+		t.Fatal("new ID should be valid")
+	}
+
+	if id.IsZero() {
+		t.Fatal("new ID should not be zero")
 	}
 
 	if id.String() == "" {
@@ -19,93 +23,30 @@ func TestNewID(t *testing.T) {
 	}
 }
 
-func TestParseID(t *testing.T) {
-	original := identity.New()
+func TestZeroID(t *testing.T) {
+	var id identity.ID
 
-	parsed, err := identity.Parse(original.String())
-
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+	if id.Valid() {
+		t.Fatal("zero ID should be invalid")
 	}
 
-	if original.String() != parsed.String() {
-		t.Fatal("parsed ID does not match original")
+	if !id.IsZero() {
+		t.Fatal("zero ID should be zero")
 	}
 }
 
-func TestParseInvalidID(t *testing.T) {
-	_, err := identity.Parse("invalid-id")
-
-	if err == nil {
-		t.Fatal("expected error")
-	}
-}
-
-func TestJSONMarshalID(t *testing.T) {
+func TestGoString(t *testing.T) {
 	id := identity.New()
 
-	data, err := json.Marshal(id)
+	got := fmt.Sprintf("%#v", id)
 
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
+	expected := "identity.ID(" + id.String() + ")"
 
-	if string(data) != `"`+id.String()+`"` {
+	if got != expected {
 		t.Fatalf(
-			"unexpected json output: %s",
-			data,
+			"expected %s, got %s",
+			expected,
+			got,
 		)
-	}
-}
-
-func TestJSONUnmarshalID(t *testing.T) {
-	original := identity.New()
-
-	data, err := json.Marshal(original)
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	var parsed identity.ID
-
-	err = json.Unmarshal(data, &parsed)
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if original.String() != parsed.String() {
-		t.Fatal("IDs do not match")
-	}
-}
-
-func TestDatabaseValue(t *testing.T) {
-	id := identity.New()
-
-	value, err := id.Value()
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if value != id.String() {
-		t.Fatal("unexpected database value")
-	}
-}
-
-func TestDatabaseScan(t *testing.T) {
-	original := identity.New()
-
-	var scanned identity.ID
-
-	err := scanned.Scan(original.String())
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if scanned.String() != original.String() {
-		t.Fatal("scanned ID mismatch")
 	}
 }

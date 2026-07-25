@@ -25,3 +25,4 @@ func (id ID) Valid() bool {
 func (id ID) GoString() string {
 	return fmt.Sprintf("identity.ID(%s)", id.String())
 }
+

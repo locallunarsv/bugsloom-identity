@@ -42,7 +42,7 @@ func (id *ID) Scan(value any) error {
 
 	default:
 		return fmt.Errorf(
-			"cannot scan identity from %T",
+			"identity: cannot scan type %T",
 			value,
 		)
 	}
