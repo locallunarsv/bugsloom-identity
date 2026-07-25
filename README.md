@@ -118,6 +118,29 @@ JSON Ouput:
 }
 ```
 
+## Database Support
+
+`identity.ID` implements:
+
+- `database/sql/driver.Valuer`
+- `sql.Scanner`
+
+Example:
+
+```go
+type Program struct {
+    ID identity.ID
+}
+```
+
+Database:
+
+```sql
+CREATE TABLE programs (
+    id UUID PRIMARY KEY
+);
+```
+
 ## License
 
 MIT License

@@ -80,4 +80,32 @@ func TestJSONUnmarshalID(t *testing.T) {
 	}
 }
 
+func TestDatabaseValue(t *testing.T) {
+	id := identity.New()
 
+	value, err := id.Value()
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if value != id.String() {
+		t.Fatal("unexpected database value")
+	}
+}
+
+func TestDatabaseScan(t *testing.T) {
+	original := identity.New()
+
+	var scanned identity.ID
+
+	err := scanned.Scan(original.String())
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if scanned.String() != original.String() {
+		t.Fatal("scanned ID mismatch")
+	}
+}
