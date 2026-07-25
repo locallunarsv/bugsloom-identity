@@ -1,9 +1,10 @@
 package identity_test
 
 import (
+	"encoding/json"
 	"testing"
 
-	"github.com/locallunarsv/bugsloom-identity"
+	identity "github.com/locallunarsv/bugsloom-identity"
 )
 
 func TestNewID(t *testing.T) {
@@ -39,3 +40,44 @@ func TestParseInvalidID(t *testing.T) {
 		t.Fatal("expected error")
 	}
 }
+
+func TestJSONMarshalID(t *testing.T) {
+	id := identity.New()
+
+	data, err := json.Marshal(id)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if string(data) != `"`+id.String()+`"` {
+		t.Fatalf(
+			"unexpected json output: %s",
+			data,
+		)
+	}
+}
+
+func TestJSONUnmarshalID(t *testing.T) {
+	original := identity.New()
+
+	data, err := json.Marshal(original)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var parsed identity.ID
+
+	err = json.Unmarshal(data, &parsed)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if original.String() != parsed.String() {
+		t.Fatal("IDs do not match")
+	}
+}
+
+

@@ -12,11 +12,11 @@ The goal is to abstract identity management away from the underlying UUID implem
 
 Current features:
 
-* UUID v7 identifier generation
-* Type-safe `ID` abstraction
-* String representation
-* Identifier validation
-* Zero-value checking
+- UUID v7 identifier generation
+- Type-safe `ID` abstraction
+- String representation
+- Identifier validation
+- Zero-value checking
 
 ## Installation
 
@@ -76,11 +76,11 @@ This keeps identity handling consistent and allows the underlying implementation
 
 Planned features:
 
-* [ ] Identifier parsing
-* [ ] JSON serialization support
-* [ ] Database/sql integration
-* [ ] Additional validation helpers
-* [ ] Stable v1.0 API
+- [x] Identifier parsing
+- [x] JSON serialization support
+- [ ] Database/sql integration
+- [ ] Additional validation helpers
+- [ ] Stable v1.0 API
 
 ## Parsing
 
@@ -95,6 +95,26 @@ id, err := identity.Parse(
 
 if err != nil {
     panic(err)
+}
+```
+
+## JSON Support
+
+`identity.ID` implements `json.Marshaler` and `json.Unmarshaler`.
+
+Example:
+
+```go
+type Program struct {
+    ID identity.ID `json:"id"`
+}
+```
+
+JSON Ouput:
+
+```json
+{
+  "id": "0192f5e7-8d32-7a91-b5e1-2a3c4d5e6f70"
 }
 ```
 
